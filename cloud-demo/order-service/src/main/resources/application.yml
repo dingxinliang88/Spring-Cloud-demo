@@ -1,0 +1,52 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: orderservice
+  datasource:
+    url: jdbc:mysql://localhost:3306/cloud_order?useSSL=false
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+#      discovery:
+#        cluster-name: SH
+#        namespace: 42baffd8-585a-4a99-b6ea-d61d696c777c # dev环境
+#        ephemeral: false # 设置为非临时实例
+mybatis:
+  type-aliases-package: cn.itcast.user.pojo
+  configuration:
+    map-underscore-to-camel-case: true
+logging:
+  level:
+    cn.itcast: debug
+  pattern:
+    dateformat: MM-dd HH:mm:ss:SSS
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://127.0.0.1:10086/eureka
+#userservice: # 给某个微服务配置负载均衡规则，这里是userservice服务
+#  ribbon:
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule # 负载均衡规则
+userservice:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.alibaba.cloud.nacos.ribbon.NacosRule # 负载均衡规则
+ribbon:
+  eager-load:
+    enabled: true
+    clients: userservice
+feign:
+#  client:
+#    config:
+#      default: # default全局的配置
+#        loggerLevel: BASIC # 日志级别，BASIC就是基本的请求和响应信息
+  httpclient:
+    enabled: true # 开启feign对HttpClient的支持
+    max-connections: 200 # 最大的连接数
+    max-connections-per-route: 50 # 每个路径的最大连接数
+
+
+
